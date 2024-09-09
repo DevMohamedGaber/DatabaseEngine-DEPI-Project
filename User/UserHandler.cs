@@ -1,4 +1,4 @@
-﻿namespace DatabaseEngine
+﻿namespace DatabaseEngine.User
 {
     public static class UserHandler
     {
@@ -15,7 +15,7 @@
         }
         private static string GetUserInput(string msg = null)
         {
-            if(msg != null)
+            if (msg != null)
             {
                 Console.WriteLine(msg);
             }

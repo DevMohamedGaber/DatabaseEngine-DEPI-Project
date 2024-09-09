@@ -1,4 +1,7 @@
-﻿namespace DatabaseEngine
+﻿using DatabaseEngine.Queries;
+using DatabaseEngine.User;
+
+namespace DatabaseEngine
 {
     public sealed class Program
     {
