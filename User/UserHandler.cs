@@ -17,7 +17,7 @@
         {
             if (msg != null)
             {
-                Console.WriteLine(msg);
+                Console.WriteLine("\n" + msg);
             }
 
             return Console.ReadLine();

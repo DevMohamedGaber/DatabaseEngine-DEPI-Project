@@ -13,8 +13,13 @@ namespace DatabaseEngine
                 // get user input
                 string stmt = UserHandler.GetUserStatment();
                 // handle user input
-                Query query = new Query(stmt);
-                query.Resolve();
+                Query query = Query.Parse(stmt, out string errMsg);
+                if(query == null)
+                {
+                    Console.WriteLine(errMsg);
+                    continue;
+                }
+                query.Execute();
             }
         }
     }

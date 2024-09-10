@@ -2,8 +2,7 @@
 {
     public struct Column
     {
-        public Type Type;
+        public ColumnType Type;
         public string Name;
-        public bool PrimaryKey;
     }
 }
