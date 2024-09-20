@@ -29,6 +29,17 @@ namespace DatabaseEngine.FileManager
 
             return File.Create(GetFilePath(tableName));
         }
+        public static bool Delete(string tableName)
+        {
+            if (!Exists(tableName))
+            {
+                return false;
+            }
+
+            File.Delete(GetFilePath(tableName));
+
+            return true;
+        }
 
         public static Table Read(string tableName)
         {
