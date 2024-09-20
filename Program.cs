@@ -12,14 +12,17 @@ namespace DatabaseEngine
             {
                 // get user input
                 string stmt = UserHandler.GetUserStatment();
+
                 // handle user input
-                Query query = Query.Parse(stmt, out string errMsg);
+                Query? query = Query.Parse(stmt, out string errMsg);
+
                 if(query == null)
                 {
-                    Console.WriteLine(errMsg);
+                    UserHandler.SetErrorMsg(errMsg);
                     continue;
                 }
-                query.Execute();
+
+                query.TryExecute();
             }
         }
     }

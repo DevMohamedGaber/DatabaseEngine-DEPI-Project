@@ -1,9 +1,9 @@
 ﻿namespace DatabaseEngine.Queries.Types
 {
-    public class SelectQuery : Query, IQueryable
+    public class SelectQuery : Query
     {
         public SelectQuery(string[] stmt) : base(stmt) { }
-        public override void Execute()
+        protected override void Execute()
         {
             
         }

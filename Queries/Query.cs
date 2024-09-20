@@ -1,4 +1,6 @@
-﻿using DatabaseEngine.Queries.Types;
+﻿using DatabaseEngine.Core;
+using DatabaseEngine.Queries.Types;
+using DatabaseEngine.User;
 
 namespace DatabaseEngine.Queries
 {
@@ -7,6 +9,8 @@ namespace DatabaseEngine.Queries
         public string[] statment { get; protected set; }
         public QueryResult Result { get; protected set; }
         public bool Success { get; protected set; }
+
+        protected Table _table;
 
         public Query(string[] statment)
         {
@@ -17,21 +21,6 @@ namespace DatabaseEngine.Queries
         public void SetStatment(string stmt)
         {
             this.statment = stmt.Split(" ");
-        }
-
-        public void Resolve()
-        {
-            
-
-            //Parse();
-
-            if (Result.Errors.Count() > 0)
-            {
-                foreach (string err in Result.Errors)
-                {
-                    Console.WriteLine("\n" + err);
-                }
-            }
         }
         public static Query? Parse(string stmt, out string Error)
         {
@@ -44,28 +33,28 @@ namespace DatabaseEngine.Queries
             }
 
             string pathKeyword = stmtArr[0].ToLower();
-            Query query = null;
+            Query? query = null;
 
             switch (pathKeyword)
             {
                 case "create":
                     query = new CreateQuery(stmtArr);
                     break;
-                //case "drop":
-                //    query = (DropQuery)this;
-                //    break;
-                //case "select":
-                //    query = (SelectQuery)this;
-                //    break;
-                //case "insert":
-                //    query = (InsertQuery)this;
-                //    break;
-                //case "update":
-                //    query = (UpdateQuery)this;
-                //    break;
-                //case "delete":
-                //    query = (DeleteQuery)this;
-                //    break;
+                case "drop":
+                    query = new DropQuery(stmtArr);
+                    break;
+                case "select":
+                    query = new SelectQuery(stmtArr);
+                    break;
+                case "insert":
+                    query = new InsertQuery(stmtArr);
+                    break;
+                case "update":
+                    query = new UpdateQuery(stmtArr);
+                    break;
+                case "delete":
+                    query = new DeleteQuery(stmtArr);
+                    break;
                 default:
                     Error = "Unkown Command: the command you used isn't supported use one of the following \n[create, Drop, select, insert into, update, delete]";
                     break;
@@ -74,6 +63,26 @@ namespace DatabaseEngine.Queries
             return query;
         }
 
-        public abstract void Execute();
+        public bool HasErrors()
+        {
+            return Result.Errors?.Count > 0;
+        }
+
+        public void TryExecute()
+        {
+            Execute();
+
+            if (!HasErrors())
+            {
+                return;
+            }
+
+            foreach (string err in Result.Errors)
+            {
+                UserHandler.SetErrorMsg(err);
+            }
+        }
+
+        protected abstract void Execute();
     }
 }

@@ -1,9 +1,9 @@
 ﻿namespace DatabaseEngine.Queries.Types
 {
-    public class UpdateQuery : Query, IQueryable
+    public class UpdateQuery : Query
     {
         public UpdateQuery(string[] stmt) : base(stmt) { }
-        public override void Execute()
+        protected override void Execute()
         {
             
         }

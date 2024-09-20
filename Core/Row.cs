@@ -1,7 +1,9 @@
-﻿namespace DatabaseEngine.Core
+﻿// set for future improvement
+namespace DatabaseEngine.Core
 {
     public struct Row
     {
-        public string Name { get; set; }
+        public object data { get; private set; }
+        public bool isDirty { get; private set; }
     }
 }
