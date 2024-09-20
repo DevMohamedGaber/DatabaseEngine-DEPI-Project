@@ -63,7 +63,9 @@ namespace DatabaseEngine.FileManager
                 content.AppendLine(table.GetColumnsString());
             }
 
-            if(table.Rows.Count() > 0)
+            content.AppendLine();
+
+            if (table.Rows.Count() > 0)
             {
                 foreach (string row in table.GetRowsString())
                 {

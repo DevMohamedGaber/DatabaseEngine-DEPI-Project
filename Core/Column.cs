@@ -1,11 +1,13 @@
-﻿namespace DatabaseEngine.Core
+﻿using DatabaseEngine.Queries;
+
+namespace DatabaseEngine.Core
 {
     public struct Column
     {
         public string Name;
-        public ColumnType Type;
+        public Type Type;
 
-        public Column(string Name, ColumnType Type)
+        public Column(string Name, Type Type)
         {
             this.Name = Name;
             this.Type = Type;
@@ -13,12 +15,12 @@
         public Column(string[] column)
         {
             this.Name = column[0];
-            Enum.TryParse(column[1], out this.Type);
+            this.Type = QueryHelpers.GetTypeByName(column[1]);
         }
 
         public override string ToString()
         {
-            return $"{Name} {Type.ToString()}";
+            return $"{Name} {Type.Name}";
         }
     }
 }
