@@ -1,5 +1,7 @@
 ﻿using DatabaseEngine.FileManager;
+using DatabaseEngine.Queries;
 using System.Reflection;
+using System.Xml.Linq;
 
 namespace DatabaseEngine.Core
 {
@@ -7,13 +9,13 @@ namespace DatabaseEngine.Core
     {
         public string Name { get; private set; }
         public List<Column> Columns { get; private set; }
-        public List<object> Rows { get; private set; }
+        public List<object[]> Rows { get; private set; }
 
-        public Table()
+        public Table(string Name)
         {
-            this.Name = string.Empty;
+            this.Name = Name;
             this.Columns = new List<Column>();
-            this.Rows = new List<object>();
+            this.Rows = new List<object[]>();
         }
 
         public bool SetName(string name)
@@ -38,7 +40,10 @@ namespace DatabaseEngine.Core
             Columns.Add(column);
             return true;
         }
-
+        public void AddRow(object[] row)
+        {
+            Rows.Add(row);
+        }
         public bool Save()
         {
             return FileHandler.Write(this);
@@ -69,25 +74,31 @@ namespace DatabaseEngine.Core
 
             List<string> result = new List<string>();
 
-            foreach (object row in Rows)
+            foreach (object[] row in Rows)
             {
-                PropertyInfo[] props = row.GetType().GetProperties();
-
-                if(props.Length == 0)
-                {
-                    continue;
-                }
-
-                string rowString = "";
-                foreach (PropertyInfo prop in props)
-                {
-                    rowString += prop.GetValue(row).ToString();
-                }
-
+                string rowString = string.Join(QueryHelpers.rowSeparator, row);
                 result.Add(rowString);
             }
 
             return result;
+        }
+
+        public bool CheckColumnExists(string columnName)
+        {
+            if(Columns.Count() == 0)
+            {
+                return false;
+            }
+
+            foreach (Column column in Columns)
+            {
+                if(column.Name == columnName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

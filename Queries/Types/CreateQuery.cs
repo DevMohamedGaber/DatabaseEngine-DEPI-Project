@@ -46,9 +46,9 @@ namespace DatabaseEngine.Queries.Types
 
         private Table? ParseTable()
         {
-            Table table = new Table();
+            Table table = new Table(string.Empty);
 
-            if(statment.Length < 3)
+            if(statment.Count() < 3)
             {
                 Result.Errors.Add("Syntax Error: No table name was given.");
                 return null;
@@ -60,14 +60,14 @@ namespace DatabaseEngine.Queries.Types
                 return null;
             }
             // (columnName columnType,columnName columnType,columnName columnType)
-            if (statment.Length < 4)
+            if (statment.Count() < 4)
             {
                 Result.Errors.Add("Syntax Error: No columns detected.");
                 return null;
             }
             string rawColumns = string.Empty;
 
-            for (int i = 3; i < statment.Length; i++)
+            for (int i = 3; i < statment.Count(); i++)
             {
                 if (statment[i] == ",")
                 {
@@ -76,7 +76,7 @@ namespace DatabaseEngine.Queries.Types
 
                 rawColumns += statment[i].Replace(" ", "");
 
-                if(i != statment.Length - 1 && !statment[i].EndsWith(","))
+                if(i != statment.Count() - 1 && !statment[i].EndsWith(","))
                 {
                     rawColumns += " ";
                 }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using DatabaseEngine.Core;
+using DatabaseEngine.Queries;
 
 // TODO: switch from normal file stream to stream writer
 namespace DatabaseEngine.FileManager
@@ -41,9 +42,31 @@ namespace DatabaseEngine.FileManager
             return true;
         }
 
-        public static Table Read(string tableName)
+        public static Table? Read(string tableName)
         {
-            Table table = new Table();
+            // check if file exists, if not create it
+            if (!Exists(tableName))
+            {
+                return null;
+            }
+            List<string> lines = File.ReadLines(GetFilePath(tableName)).ToList();
+            Table table = new Table(tableName);
+            
+            // define columns
+            string[] columns = lines[0].Split(",");
+
+            foreach (var column in columns)
+            {
+                string[] col = column.Split(" ");
+                table.AddColumn(new Column(col));
+            }
+
+            // define rows
+            for (int i = 2; i < lines.Count(); i++)
+            {
+                string[] values = lines[i].Split(QueryHelpers.rowSeparator);
+                table.AddRow(values);
+            }
 
             return table;
         }
