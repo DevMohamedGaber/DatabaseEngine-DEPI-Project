@@ -2,10 +2,25 @@
 {
     public static class QueryHelpers
     {
-        private static readonly string[] keywords = ["create", "drop", "select", "insert", "into", "delete", "update", "where"];
-        private static readonly string[] arithmeticOperators = ["=", "!=", ">", ">=", "<", "<="];
-        private static readonly string[] logicalOperators = ["AND", "OR"];
+        private static readonly List<string> keywords = ["create", "drop", "select", "insert", "into", "delete", "update", "where"];
+        private static readonly List<string> arithmeticOperators = ["=", "!=", ">", ">=", "<", "<="];
+        private static readonly List<string> logicalOperators = ["AND", "OR"];
         public static readonly string rowSeparator = "@@";
+
+        public static bool IsValidTableName(string tableName)
+        {
+            tableName = tableName.ToLower();
+
+            if (string.IsNullOrEmpty(tableName) ||
+                keywords.Contains(tableName) || 
+                arithmeticOperators.Contains(tableName) || 
+                logicalOperators.Contains(tableName))
+            {
+                return false;
+            }
+
+            return true;
+        }
         public static Type GetTypeByName(string typeName)
         {
             Type type = null;

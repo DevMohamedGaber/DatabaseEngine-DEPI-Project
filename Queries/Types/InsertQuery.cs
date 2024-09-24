@@ -72,10 +72,6 @@ namespace DatabaseEngine.Queries.Types
 
             object[] record = new object[_table.Columns.Count()];
 
-            /*
-                columnNames = null => add to all columns
-                columnNames != null => add only to specified columns
-             */
             for (int i = 0; i < _table.Columns.Count(); i++)
             {
                 if(columnNames == null)

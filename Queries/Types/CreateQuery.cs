@@ -40,7 +40,7 @@ namespace DatabaseEngine.Queries.Types
 
             table.Save(true);
 
-            UserHandler.SetSuccessMsg($"Table {table.Name} created successfully.");
+            UserHandler.SetSuccessMsg($"Table {table.Name} created successfully");
             Success = true;
         }
 
@@ -50,19 +50,27 @@ namespace DatabaseEngine.Queries.Types
 
             if(statment.Count() < 3)
             {
-                Result.Errors.Add("Syntax Error: No table name was given.");
+                Result.AddSyntaxError("No table name was given");
                 return null;
             }
 
-            if(!table.SetName(statment[2].ToLower()))
+            string tableName = statment[2];
+
+            if(!QueryHelpers.IsValidTableName(tableName))
             {
-                Result.Errors.Add("Process Error: Table with the same name already exists.");
+                Result.AddProcessError("invalid table name");
+                return null;
+            }
+
+            if (!table.SetName(tableName))
+            {
+                Result.AddProcessError("Table with the same name already exists");
                 return null;
             }
             // (columnName columnType,columnName columnType,columnName columnType)
             if (statment.Count() < 4)
             {
-                Result.Errors.Add("Syntax Error: No columns detected.");
+                Result.AddSyntaxError("No columns detected");
                 return null;
             }
             string rawColumns = string.Empty;
@@ -87,8 +95,7 @@ namespace DatabaseEngine.Queries.Types
                 Result.Errors.Add("Syntax Error: Columns aren't defined correctly with (Name Type) Syntax.");
                 return null;
             }
-            rawColumns = rawColumns.Replace("(", "");
-            rawColumns = rawColumns.Replace(")", "");
+            rawColumns = rawColumns.TrimStart('(').TrimEnd(')');
 
             string[] columnsString = rawColumns.Split(',');
 
