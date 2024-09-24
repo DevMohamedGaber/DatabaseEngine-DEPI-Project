@@ -13,11 +13,11 @@
 
         public void AddSyntaxError(string msg)
         {
-            this.Errors.Add("Syntax Error: " + msg);
+            this.Errors.Add($"Syntax Error: {msg}.");
         }
         public void AddProcessError(string msg)
         {
-            this.Errors.Add("Process Error: " + msg);
+            this.Errors.Add($"Process Error: {msg}.");
         }
     }
 }

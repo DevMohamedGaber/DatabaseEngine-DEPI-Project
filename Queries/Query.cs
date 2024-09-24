@@ -11,7 +11,7 @@ namespace DatabaseEngine.Queries
         public bool Success { get; protected set; }
 
         protected Table? _table;
-        private List<Condition> conditions;
+        protected List<Condition> conditions;
 
         public Query(string[] statment)
         {
@@ -85,19 +85,19 @@ namespace DatabaseEngine.Queries
             }
         }
 
-        private void ParseConditions()
+        protected bool ParseConditions()
         {
             int keywordIndex = QueryHelpers.GetKeywordIndex(statment, "where");
 
             if (keywordIndex == -1)
             {
-                return; // no condition in the query
+                return false; // no condition in the query
             }
 
             if(statment.Count() < keywordIndex + 2)
             {
                 Result.AddSyntaxError("a condition started but no parametars given after 'where'.");
-                return;
+                return false;
             }
 
             for (int i = keywordIndex + 1; i < statment.Count(); i++)
@@ -107,7 +107,7 @@ namespace DatabaseEngine.Queries
                 if(operation == string.Empty)
                 {
                     Result.AddSyntaxError($"no operation given in '... {conditionString} ...'.");
-                    return;
+                    return false;
                 }
 
                 string[] conditionArr = conditionString.Split(operation);
@@ -115,12 +115,13 @@ namespace DatabaseEngine.Queries
                 if (!_table.CheckColumnExists(conditionArr[0]))
                 {
                     Result.AddProcessError($"no column named '{conditionArr[0]}' found in '{_table.Name}' table.");
-                    return;
+                    return false;
                 }
 
-                Condition condition = new Condition(operation, conditionArr[0], conditionArr[1]);
+                Condition condition = new Condition(conditionArr[0], operation, conditionArr[1]);
                 conditions.Add(condition);
             }
+            return true;
         }
 
         protected abstract void Execute();

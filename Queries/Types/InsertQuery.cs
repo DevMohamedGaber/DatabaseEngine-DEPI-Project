@@ -64,8 +64,6 @@ namespace DatabaseEngine.Queries.Types
             {
                 return;
             }
-            Console.WriteLine(columnNames == null && _table.Columns.Count() != Values.Count());
-            Console.WriteLine(columnNames != null && columnNames.Count() != Values.Count());
             if ((columnNames == null && _table.Columns.Count() != Values.Count()) || (columnNames != null && columnNames.Count() != Values.Count()))
             {
                 Result.AddProcessError($"the number of values doesn't match the number of columns in '{tableName}' table.");

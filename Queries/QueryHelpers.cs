@@ -81,7 +81,7 @@
             {
                 if (statment[i].ToLower() == keyword)
                 {
-                    return 1;
+                    return i;
                 }
             }
 

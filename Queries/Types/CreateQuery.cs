@@ -38,7 +38,7 @@ namespace DatabaseEngine.Queries.Types
                 return;
             }
 
-            table.Save();
+            table.Save(true);
 
             UserHandler.SetSuccessMsg($"Table {table.Name} created successfully.");
             Success = true;

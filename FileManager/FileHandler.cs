@@ -70,7 +70,7 @@ namespace DatabaseEngine.FileManager
 
             return table;
         }
-        public static bool Write(Table table, bool forceCreate = true)
+        public static bool Write(Table table, bool forceCreate)
         {
             // Cache file stream
             FileStream? file = null;
@@ -85,10 +85,6 @@ namespace DatabaseEngine.FileManager
                 file = Create(table.Name);
             }
 
-            if(file == null)
-            {
-                file = File.OpenWrite(GetFilePath(table.Name));
-            }
 
             StringBuilder content = new StringBuilder();
 
@@ -108,6 +104,19 @@ namespace DatabaseEngine.FileManager
             }
 
             byte[] contentBytes = Encoding.ASCII.GetBytes(content.ToString());
+
+            if (!forceCreate)
+            {
+                using (FileStream fs = new FileStream(GetFilePath(table.Name), FileMode.Truncate, FileAccess.Write))
+                {
+                    fs.Close();
+                };
+            }
+
+            if (file == null)
+            {
+                file = File.OpenWrite(GetFilePath(table.Name));
+            }
             file.Write(contentBytes);
 
             file.Close();

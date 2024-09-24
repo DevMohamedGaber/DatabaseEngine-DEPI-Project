@@ -44,9 +44,9 @@ namespace DatabaseEngine.Core
         {
             Rows.Add(row);
         }
-        public bool Save()
+        public bool Save(bool forceCreate = false)
         {
-            return FileHandler.Write(this);
+            return FileHandler.Write(this, forceCreate);
         }
 
         public string GetColumnsString()
@@ -99,6 +99,23 @@ namespace DatabaseEngine.Core
             }
 
             return false;
+        }
+
+        public int GetColumnIndexByName(string name)
+        {
+            if(Columns.Count() == 0)
+            {
+                return -1;
+            }
+
+            for (int i = 0; i < Columns.Count(); i++)
+            {
+                if (Columns[i].Name == name)
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
     }
 }
