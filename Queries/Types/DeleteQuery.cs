@@ -29,7 +29,7 @@ namespace DatabaseEngine.Queries.Types
                 return;
             }
 
-            if(!ParseConditions())
+            if(!ParseConditions() && Result.Errors.Count() > 0)
             {
                 return;
             }

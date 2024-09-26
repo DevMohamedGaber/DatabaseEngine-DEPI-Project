@@ -44,6 +44,11 @@ namespace DatabaseEngine.Core
         {
             Rows.Add(row);
         }
+
+        public void UpdateRow(int index, object[] row)
+        {
+            Rows[index] = row;
+        }
         public bool Save(bool forceCreate = false)
         {
             return FileHandler.Write(this, forceCreate);
