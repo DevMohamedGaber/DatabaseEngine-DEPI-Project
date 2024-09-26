@@ -2,7 +2,7 @@
 {
     public static class QueryHelpers
     {
-        private static readonly List<string> keywords = ["create", "drop", "select", "insert", "into", "delete", "update", "where"];
+        private static readonly List<string> keywords = ["create", "drop", "select", "insert", "into", "delete", "update", "from", "where"];
         private static readonly List<string> arithmeticOperators = ["=", "!=", ">", ">=", "<", "<="];
         private static readonly List<string> logicalOperators = ["AND", "OR"];
         public static readonly string rowSeparator = "@@";
